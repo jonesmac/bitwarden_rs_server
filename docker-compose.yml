@@ -1,0 +1,37 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  bitwarden:
+    image: bitwardenrs/server
+    restart: always
+    volumes:
+      - ./bw-data:/data
+    environment:
+      WEBSOCKET_ENABLED: 'true' # Required to use websockets
+      SIGNUPS_ALLOWED: 'false'   # set to false to disable signups
+      ADMIN_TOKEN: 
+      SMTP_HOST: smtp.gmail.com
+      SMTP_FROM: bitwarden@focusedcreations.com
+      SMTP_PORT: '587'
+      SMTP_SSL: 'true'
+      DOMAIN: 'https://bitwarden.focusedcreations.com'
+      SMTP_USERNAME:
+      SMTP_PASSWORD: 
+
+  caddy:
+    image: abiosoft/caddy
+    restart: always
+    volumes:
+      - ./Caddyfile:/etc/Caddyfile:ro
+      - caddycerts:/root/.caddy
+    ports:
+      - 80:80 # needed for Let's Encrypt
+      - 443:443
+    environment:
+      ACME_AGREE: 'true'              # agree to Let's Encrypt Subscriber Agreement
+      DOMAIN: 'bitwarden.focusedcreations.com' # CHANGE THIS! Used for Auto Let's Encrypt SSL
+      EMAIL: 'jonesmac82@gmail.com'  # CHANGE THIS! Optional, provided to Let's Encrypt
+
+volumes:
+  caddycerts:
