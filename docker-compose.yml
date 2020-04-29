@@ -6,7 +6,7 @@ services:
     image: bitwardenrs/server
     restart: always
     volumes:
-      - ./bw-data:/data
+      - bw-data:/data
     environment:
       WEBSOCKET_ENABLED: 'true' # Required to use websockets
       SIGNUPS_ALLOWED: 'false'   # set to false to disable signups
@@ -33,5 +33,33 @@ services:
       DOMAIN: 'bitwarden.focusedcreations.com' # CHANGE THIS! Used for Auto Let's Encrypt SSL
       EMAIL: 'jonesmac82@gmail.com'  # CHANGE THIS! Optional, provided to Let's Encrypt
 
+  bitwarden_backup:
+    image: bruceforce/bw_backup
+    container_name: bitwarden_backup
+    restart: on-failure
+    depends_on:
+      - bitwarden
+    volumes:
+      - bw-data:/data/
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
+        # uncomment this if you want your backup to be written to ./backup/ folder"
+      - bw-data:/backup_folder/
+    environment:
+      - DB_FILE=/data/db.sqlite3
+        # uncomment this if you want your backup to be written to ./backup/ folder"
+      - BACKUP_FILE=/backup_folder/backups/db.sqlite3
+      - CRON_TIME=0 5 1 * *
+      - TIMESTAMP=true
+      - UID=0
+      - GID=0
+
 volumes:
   caddycerts:
+  bw-data:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/data     
+      o: bind
+      
