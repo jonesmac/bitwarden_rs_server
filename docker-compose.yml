@@ -15,7 +15,7 @@ services:
       SMTP_FROM: bitwarden@focusedcreations.com
       SMTP_PORT: '587'
       SMTP_SSL: 'true'
-      DOMAIN: 'https://bitwarden2.focusedcreations.com'
+      DOMAIN: 'https://bitwarden2.focusedcreations.com:2345'
       SMTP_USERNAME: 
       SMTP_PASSWORD: 
 
@@ -37,6 +37,8 @@ services:
     image: bruceforce/bw_backup:rpi3
     container_name: bitwarden_backup
     restart: on-failure
+    # uncomment to debug
+    #entrypoint: /bin/sh
     depends_on:
       - bitwarden
     volumes:
