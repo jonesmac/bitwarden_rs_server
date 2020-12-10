@@ -18,25 +18,30 @@ services:
       DOMAIN: 'https://bitwarden.focusedcreations.com'
       SMTP_USERNAME:
       SMTP_PASSWORD: 
+    networks:
+      default:
+        aliases:
+          - bitwarden_rs
 
   caddy:
-    image: abiosoft/caddy
+    image: caddy:2.2.1
     restart: always
     volumes:
-      - ./Caddyfile:/etc/Caddyfile:ro
-      - caddycerts:/root/.caddy
+      - $PWD/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_config:/config
+      - caddy_data:/data
     ports:
       - 80:80 # needed for Let's Encrypt
       - 443:443
     environment:
       ACME_AGREE: 'true'              # agree to Let's Encrypt Subscriber Agreement
-      DOMAIN: 'bitwarden.focusedcreations.com' # CHANGE THIS! Used for Auto Let's Encrypt SSL
+      DOMAIN: 'bitwarden2.focusedcreations.com' # CHANGE THIS! Used for Auto Let's Encrypt SSL
       EMAIL: 'jonesmac82@gmail.com'  # CHANGE THIS! Optional, provided to Let's Encrypt
 
   bitwarden_backup:
     image: bruceforce/bw_backup
     container_name: bitwarden_backup
-    restart: on-failure
+    #restart: on-failure
     depends_on:
       - bitwarden
     volumes:
@@ -55,7 +60,8 @@ services:
       - GID=0
 
 volumes:
-  caddycerts:
+  caddy_data:
+  caddy_config:
   bw-data:
     driver: local
     driver_opts:
