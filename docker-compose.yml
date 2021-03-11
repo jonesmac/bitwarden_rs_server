@@ -26,7 +26,7 @@ services:
   bitwarden_backup:
     image: bruceforce/bw_backup:latest-rpi3
     container_name: bitwarden_backup
-    #restart: on-failure
+    restart: on-failure
     depends_on:
       - bitwarden
     volumes:
@@ -39,7 +39,7 @@ services:
       - DB_FILE=/data/db.sqlite3
         # uncomment this if you want your backup to be written to ./backup/ folder"
       - BACKUP_FILE=/backup_folder/backups/db.sqlite3
-      - CRON_TIME=0 5 1 * *
+      - CRON_TIME=0 5 * * *
       - TIMESTAMP=true
       - UID=0
       - GID=0
