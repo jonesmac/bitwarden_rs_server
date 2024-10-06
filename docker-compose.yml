@@ -3,18 +3,17 @@ version: '3'
 
 services:
   bitwarden:
-    image: vaultwarden/server:1.22.2
+    image: vaultwarden/server:1.32.1
     restart: always
     volumes:
       - bw-data:/data
     environment:
       WEBSOCKET_ENABLED: 'true' # Required to use websockets
       SIGNUPS_ALLOWED: 'false'   # set to false to disable signups
-      ADMIN_TOKEN: 
       SMTP_HOST: smtp.gmail.com
       SMTP_FROM: bitwarden@focusedcreations.com
       SMTP_PORT: '587'
-      SMTP_SSL: 'true'
+      SMTP_SECURITY: 'starttls'
       DOMAIN: 'https://bitwarden.focusedcreations.com'
       SMTP_USERNAME:
       SMTP_PASSWORD: 
