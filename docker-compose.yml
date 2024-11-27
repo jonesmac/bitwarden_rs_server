@@ -3,7 +3,7 @@ version: '3'
 
 services:
   bitwarden:
-    image: vaultwarden/server:1.32.4
+    image: vaultwarden/server:1.32.5
     restart: always
     volumes:
       - bw-data:/data
@@ -16,6 +16,8 @@ services:
       DOMAIN: 'https://bitwarden.focusedcreations.com'
       SMTP_USERNAME:
       SMTP_PASSWORD: 
+    ports:
+      - 8001:80
     networks:
       - caddy_server_pi 
 
