@@ -1,6 +1,6 @@
 services:
   bitwarden:
-    image: vaultwarden/server:1.32.5
+    image: vaultwarden/server:1.32.7
     restart: always
     volumes:
       - bw-data:/data
