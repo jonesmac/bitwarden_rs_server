@@ -19,7 +19,7 @@ services:
       - caddy_server_pi 
 
   bitwarden_backup:
-    image: bruceforce/bw_backup:latest
+    image: bruceforce/vaultwarden-backup:latest
     container_name: bitwarden_backup
     restart: on-failure
     depends_on:
@@ -31,9 +31,9 @@ services:
         # uncomment this if you want your backup to be written to ./backup/ folder"
       - bw-data:/backup_folder/
     environment:
-      - DB_FILE=/data/db.sqlite3
+      - VW_DATABASE_URL=/data/db.sqlite3
         # uncomment this if you want your backup to be written to ./backup/ folder"
-      - BACKUP_FILE=/backup_folder/backups/db.sqlite3
+      - BACKUP_DIR=/backup_folder/backups/db.sqlite3
       - CRON_TIME=0 5 * * *
       - TIMESTAMP=true
       - UID=0
