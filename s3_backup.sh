@@ -6,6 +6,8 @@
 
 echo 'Initiating backup to s3' >> ${LOG_FILE}
 
-aws s3 sync ${BITWARDEN_BACKUPS_DIR} s3://${BITWARDEN_BACKUPS_BUCKET} --include "2025.*" >> ${LOG_FILE} 2>&1
+echo "$(date)" >> ${LOG_FILE}
+
+aws s3 sync ${BITWARDEN_BACKUPS_DIR} s3://${BITWARDEN_BACKUPS_BUCKET} --include "db-*" >> ${LOG_FILE} 2>&1
 
 echo 'Cron Complete' >> ${LOG_FILE}
